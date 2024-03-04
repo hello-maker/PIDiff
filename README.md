@@ -129,12 +129,9 @@ The main results for the proposed model are presented in the table below. For a 
 | [`DrugGPS`](https://github.com/hello-maker/PIDiff/blob/master/sampling_results/DrugGPS_vina_dock.pt) | 28.18 | 6.33 | -3.74  |  0.12  | -27.32  | 48.1%  | 
 | [`TargetDiff`](https://github.com/hello-maker/PIDiff/blob/master/sampling_results/targetdiff_vina_docked.pt) | -5.47 | -6.64 | -7.80  |  0.57  | -5.31  | 91.9%  | 
 | [`ResGen`](https://github.com/hello-maker/PIDiff/blob/master/sampling_results/ResGen_vina_dock.pt) | 13.79 | -1.53 | -4.90  |  0.23  | -13.73  | 40.7%  | 
-| [`PharDiff`](https://github.com/3D-MOLECULE-GENERATION/anonymous/blob/main/sampling_results/PharDiff_vina_dock.pt) | **-6.64** | **-7.20** | **-8.16**  |  **0.62**  | **-5.93**  | **98.1%**  | 
+| [`PIDiff`](https://github.com/hello-maker/PIDiff/blob/master/sampling_results/PIDiff_vina_docked.pt) | **-6.58** | **-7.52** | **-8.10**  |  **0.64**  | **-6.03**  | **100%**  | 
 | [`Testset`](https://github.com/hello-maker/PIDiff/blob/master/sampling_results/crossdocked_test_vina_docked.pt) | -6.36 | -6.71 | -7.45  |  -  | -6.28  | -  | 
 
-https://github.com/hello-maker/PIDiff/blob/master/sampling_results/ar_vina_docked.pt
-https://github.com/hello-maker/PIDiff/blob/master/sampling_results/cvae_vina_docked.pt
-https://github.com/hello-maker/PIDiff/blob/master/sampling_results/pocket2mol_vina_docked.pt
 
 
 <table class="center">
