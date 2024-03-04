@@ -1,18 +1,6 @@
 # PharDiff: Pharmacophore-aware Diffusion Model for Pocket Specific 3D Molecular Generation
 <img src="https://github.com/3D-MOLECULE-GENERATION/anonymous/blob/main/assets/MAIN.png">
 
-## Diffusion process of proposed method
-**Note:** For a better understanding of the process, protein pockets have been excluded in the video below.
-<table class="center">
-<tr>
-  <td style="text-align:center;"><b>Forward process</b></td>
-  <td style="text-align:center;"><b>Reverse process</b></td>
-</tr>
-<tr>
-  <td><img src="https://github.com/3D-MOLECULE-GENERATION/anonymous/blob/main/assets/sunitinib.gif" width="300"></td>
-  <td><img src="https://github.com/3D-MOLECULE-GENERATION/anonymous/blob/main/assets/sunitinib_reverse.gif" width="300"></td>
-</tr>
-</table>
 
 ## Requirements
 We include key dependencies below. Our detailed environmental setup is available in [`environment.yml`]
