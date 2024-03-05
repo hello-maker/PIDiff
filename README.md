@@ -38,12 +38,6 @@ Data
 |   |  # Index storage files for each sample, used for splitting the train set and test set, or for other preprocessing purposes.
 |   |__index.pkl
 |   
-|__Vocab
-|   |   # The set of Fragments constituting the ligands of CrossDocked2020 samples, extracted through the 3D Fragmentizing Algorithm.
-|   |___vocab.txt
-|   |
-|   |   # The set of pharmacophores playing a crucial role in protein-ligand interactions, extracted through the 3D Pharmacophore Decomposition proposed in this paper.
-|   |___vocab_super.pickle
 |   
 |__Split
 |   |   # Names and index numbers of samples used directly for training and validation.
@@ -73,7 +67,6 @@ It will generate a `index.pkl` file and create a new directory containing the or
 * [split_pl_dataset.py](scripts/data_preparation/split_pl_dataset.py) will split the training and test set. We use the same split `split_by_name.pt` as 
 [AR](https://arxiv.org/abs/2203.10446) and [Pocket2Mol](https://arxiv.org/abs/2205.07249), which can also be downloaded in the Google Drive - data folder.
 
-* [get_pharmacophore.ipynb](datasets/get_pharmacophore.ipynb) will identify pharmacophores in complex data comprising a protein's pocket and the ligand. Through this process, it is possible to extract information about the indices and position of atoms that make up the pharmacophore, as well as details about the intermolecular interactions they undergo.
     ```bash
     python scripts/data_preparation/clean_crossdocked.py --source data/CrossDocked2020 --dest data/crossdocked_v1.1_rmsd1.0 --rmsd_thr 1.0
 
@@ -110,7 +103,7 @@ The docking mode can be chosen from {qvina, vina_score, vina_dock, none}
 Note: It will take some time to prepare pqdqt and pqr files when you run the evaluation code with vina_score/vina_dock docking mode for the first time.
 
 ## Real-world Validation
-If you want to generate molecules for a new protein not in the test set, you should run `./Anonymous/scripts/real_world_inference.ipynb`. 
+If you want to generate molecules for a new protein not in the test set, you should run `./scripts/real_world/Iinference.ipynb`. 
 **Remember that you need to prepare the ligand's .sdf file for creating the protein pocket and the .pdb file containing the structural information of the protein.**
 
 Typically, the above process is also necessary for performing MD simulation.
