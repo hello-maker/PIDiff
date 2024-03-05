@@ -37,8 +37,7 @@ Data
 |   |
 |   |  # Index storage files for each sample, used for splitting the train set and test set, or for other preprocessing purposes.
 |   |__index.pkl
-|   
-|   
+|    
 |__Split
 |   |   # Names and index numbers of samples used directly for training and validation.
 |   |___crossdocked_pocket10_pose_split.pt
