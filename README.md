@@ -74,12 +74,6 @@ It will generate a `index.pkl` file and create a new directory containing the or
     
     python scripts/data_preparation/split_pl_dataset.py --path data/crossdocked_v1.1_rmsd1.0_pocket10 --dest data/crossdocked_pocket10_pose_split.pt --fixed_split data/split_by_name.pt
     ```
-## Note 
-If you want to directly understand the preprocessing process of the dataset for training a diffusion model that considers pharmacophores, please refer to `./Anonymous/datasets/pl_pair_dataset.py`. 
-
-If the .lmdb file does not exist, this code will automatically execute, but it will not run if it already exists. 
-
-If you have already moved all the datasets provided through the submission site to the directory, this code will not execute.
 
 ## Training
 ### Training from scratch
