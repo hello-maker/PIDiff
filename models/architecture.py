@@ -211,32 +211,20 @@ class SinusoidalPosEmb(nn.Module):
 
 
 # Model
-class ScorePosNet3D(nn.Module):
+class PIDiff(nn.Module):
 
     def __init__(self, config, protein_atom_feature_dim, ligand_atom_feature_dim):
         super().__init__()
         self.config = config
 
-        # variance schedule
         self.model_mean_type = config.model_mean_type  # ['noise', 'C0']
         self.loss_v_weight = config.loss_v_weight
-        # self.v_mode = config.v_mode
-        # assert self.v_mode == 'categorical'
-        # self.v_net_type = getattr(config, 'v_net_type', 'mlp')
-        # self.bond_loss = getattr(config, 'bond_loss', False)
-        # self.bond_net_type = getattr(config, 'bond_net_type', 'pre_att')
-        # self.loss_bond_weight = getattr(config, 'loss_bond_weight', 0.)
-        # self.loss_non_bond_weight = getattr(config, 'loss_non_bond_weight', 0.)
 
         self.sample_time_method = config.sample_time_method  # ['importance', 'symmetric']
-        # self.loss_pos_type = config.loss_pos_type  # ['mse', 'kl']
-        # print(f'Loss pos mode {self.loss_pos_type} applied!')
-        # print(f'Loss bond net type: {self.bond_net_type} '
-        #       f'bond weight: {self.loss_bond_weight} non bond weight: {self.loss_non_bond_weight}')
 
         if config.beta_schedule == 'cosine':
             alphas = cosine_beta_schedule(config.num_diffusion_timesteps, config.pos_beta_s) ** 2
-            # print('cosine pos alpha schedule applied!')
+
             betas = 1. - alphas
         else:
             betas = get_beta_schedule(

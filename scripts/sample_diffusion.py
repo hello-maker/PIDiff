@@ -14,7 +14,7 @@ import utils.misc as misc
 import utils.transforms as trans
 from datasets import get_dataset
 from datasets.pl_data import FOLLOW_BATCH
-from models.molopt_score_model import ScorePosNet3D, log_sample_categorical
+from models.architecture import PIDiff, log_sample_categorical
 from utils.evaluation import atom_num
 
 
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     logger.info(f'Successfully load the dataset (size: {len(test_set)})!')
 
     # Load model
-    model = ScorePosNet3D(
+    model = PIDiff(
         ckpt['config'].model,
         protein_atom_feature_dim=protein_featurizer.feature_dim,
         ligand_atom_feature_dim=ligand_featurizer.feature_dim
