@@ -600,7 +600,7 @@ class PIDiff(nn.Module):
                 ligand_vdw_radii = torch.tensor([
                     VDWRADII[atom_idx] for atom_idx in pred_log_atom_type
                 ])       
-                ## protein atom에 대한 vdw도 계산해야 함
+      
                 dm_0 = ligand_vdw_radii.unsqueeze(1).repeat(1, protein_coor.size(0)).cuda()
 
                 N = 6
