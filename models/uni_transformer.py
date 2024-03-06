@@ -291,22 +291,16 @@ class UniTransformerO2TwoUpdateGeneral(nn.Module):
         src, dst = edge_index
         # src : start node , dst : target node
         edge_type = torch.zeros(len(src)).to(edge_index)
-        n_src = mask_ligand[src] == 1  # ligand 중 start node 인 것
-        n_dst = mask_ligand[dst] == 1  # ligand 중 target node 인 것
-        edge_type[n_src & n_dst] = 0   # ligand의 atom 끼리 결합
-        edge_type[n_src & ~n_dst] = 1  # ligand의 atom과 protein의 atom
-        edge_type[~n_src & n_dst] = 2  # protein의 atom과 ligand의 atom
-        edge_type[~n_src & ~n_dst] = 3 # protein의 atom 끼리의 결합
+        n_src = mask_ligand[src] == 1  
+        n_dst = mask_ligand[dst] == 1  
+        edge_type[n_src & n_dst] = 0   
+        edge_type[n_src & ~n_dst] = 1 
+        edge_type[~n_src & n_dst] = 2 
+        edge_type[~n_src & ~n_dst] = 3 
         edge_type = F.one_hot(edge_type, num_classes=4)
         return edge_type
 
     def forward(self, h, x, mask_ligand, batch, return_all=False, fix_x=False):
-        # shape of "h_all" : [1846, 128] = h
-        # 이 때 h의 row는 배치별로 정렬되어 있고 각 배치별 row는 protein>ligand 순
-        
-        # shape of "pos_all" : [1846, 3] = x
-        ## x도 마찬가지F
-        
         # shape of "mask_ligand" : [1846]  => Which index is protein and which is ligand.
         # mask_ligand[:-104] => Protein ,  mask_ligand[-104:] => Ligand 
         # shape of "batch_all" : [1846]
