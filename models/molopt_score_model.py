@@ -346,19 +346,17 @@ class ScorePosNet3D(nn.Module):
         else:
             input_ligand_feat = init_ligand_v
 
-        # protein atom feature와 ligand atom feature의 embedding
+
         h_protein = self.protein_atom_emb(protein_v)
         init_ligand_h = self.ligand_atom_emb(input_ligand_feat)
 
 
-        ## 이 코드의 의미는 ligand의 atom인지 protein의 atom인지 구별하기 위함.
+
         if self.config.node_indicator:
             h_protein = torch.cat([h_protein, torch.zeros(len(h_protein), 1).to(h_protein)], -1)
             init_ligand_h = torch.cat([init_ligand_h, torch.ones(len(init_ligand_h), 1).to(h_protein)], -1)
 
 
-        ## 이 코드는 배치별 데이터가 하나의 텐서에 concat되어 있는 데이터를 
-        ## 배치별로 수행하기 위해 각 atom을 배치에 따라 정렬해주는 코드이다. 
         h_all, pos_all, batch_all, mask_ligand = compose_context(
             h_protein=h_protein,
             h_ligand=init_ligand_h,
@@ -367,11 +365,7 @@ class ScorePosNet3D(nn.Module):
             batch_protein=batch_protein,
             batch_ligand=batch_ligand,
         )
-        # shape of "h_all" : [1846, 128]
-        # shape of "pos_all" : [1846, 3]
-        # shape of "mask_ligand" : [1846]  => Which index is protein and which is ligand.
-        # mask_ligand[:-104] => Protein ,  mask_ligand[-104:] => Ligand 
-        # shape of "batch_all" : [1846]
+
         
         outputs = self.refine_net(h_all, pos_all, mask_ligand, batch_all, return_all=return_all, fix_x=fix_x)
         final_pos, final_h = outputs['x'], outputs['h']
@@ -416,11 +410,10 @@ class ScorePosNet3D(nn.Module):
             log_v0 + log_cumprod_alpha_t,
             log_1_min_cumprod_alpha - np.log(self.num_classes)
         )  
-        ## AppendixE에 Line.5 >> log_c를 구하는 과정
-        ## Eq.4 에서 C[star]의 우항 : alpha_bar_t_minus_1 + (1_minus_alpha_bar_t-1/K) 
+
         return log_probs
 
-    ## v_t를 구하는 과정.
+
     def q_v_sample(self, log_v0, t, batch):
         log_qvt_v0 = self.q_v_pred(log_v0, t, batch)
         sample_index = log_sample_categorical(log_qvt_v0)
@@ -432,7 +425,7 @@ class ScorePosNet3D(nn.Module):
     def q_v_posterior(self, log_v0, log_vt, t, batch):
         # q(vt-1 | vt, v0) = q(vt | vt-1, x0) * q(vt-1 | x0) / q(vt | x0)
         t_minus_1 = t - 1
-        # Remove negative values, will not be used anyway for final decoder
+
         t_minus_1 = torch.where(t_minus_1 < 0, torch.zeros_like(t_minus_1), t_minus_1)
         log_qvt1_v0 = self.q_v_pred(log_v0, t_minus_1, batch)
         unnormed_logprobs = log_qvt1_v0 + self.q_v_pred_one_timestep(log_vt, t, batch)
@@ -516,21 +509,11 @@ class ScorePosNet3D(nn.Module):
     def get_diffusion_loss(
             self, protein_pos, protein_v, batch_protein, ligand_pos, ligand_v, batch_ligand, time_step=None, train=True
     ):
-        """     protein_pos=gt_protein_pos,
-                protein_v=batch.protein_atom_feature.float(),
-                batch_protein=batch.protein_element_batch,
 
-                ligand_pos=batch.ligand_pos,
-                ligand_v=batch.ligand_atom_feature_full,
-                batch_ligand=batch.ligand_element_batch
-                """
         num_graphs = batch_protein.max().item() + 1
         
         
-        # batch별로 하나의 protein을 구성하는 원자의 각 x,y,z에 대한 평균을 실제값에서 빼는 연산
-        # 무슨 의미인가? >> center를 0으로 >> Center of Gravity를 0으로
-        protein_pos, ligand_pos, _ = center_pos(
-            protein_pos, ligand_pos, batch_protein, batch_ligand, mode=self.center_pos_mode)
+        protein_pos, ligand_pos, _ = center_pos(protein_pos, ligand_pos, batch_protein, batch_ligand, mode=self.center_pos_mode)
 
        
         # 1. sample noise levels
@@ -550,9 +533,7 @@ class ScorePosNet3D(nn.Module):
         # ligand_pos_perturbed = X_t
         
         ###############################################################################
-        """
-        By manifold hypothesis, I inject gaussian noise N(0, 0.0001) to atoms of ligand. 
-        """
+
         #ligand_pos_noise = ligand_pos + torch.randn_like(ligand_pos) * 0.01
         #ligand_pos_perturbed = a_pos.sqrt() * ligand_pos_noise + (1.0 - a_pos).sqrt() * pos_noise  # pos_noise * std
         
@@ -603,7 +584,7 @@ class ScorePosNet3D(nn.Module):
         loss_pos = scatter_mean(((pred - target) ** 2).sum(-1), batch_ligand, dim=0)
         loss_pos = torch.mean(loss_pos)
 ########################
-        # atom type loss  ## 그럼 정말 v_t와 v_t_hat의 차이로 loss를?? [더 좋은 방법이 있을 것 같은데...]
+        
         log_ligand_v_recon = F.log_softmax(pred_ligand_v, dim=-1)
         log_v_model_prob = self.q_v_posterior(log_ligand_v_recon, log_ligand_vt, time_step, batch_ligand)
         log_v_true_prob = self.q_v_posterior(log_ligand_v0, log_ligand_vt, time_step, batch_ligand)
@@ -653,14 +634,7 @@ class ScorePosNet3D(nn.Module):
                 total_energy += der
         else:
             total_energy = 0
-        """
-        for ligatom_idx in range(energy.shape[0]):
-            for protatom_idx in range(energy[ligatom_idx].shape[0]):
-                print(torch.autograd.grad(energy[ligatom_idx, protatom_idx], dm[ligatom_idx, protatom_idx], retain_graph=True, create_graph=True, allow_unused=True)[0])
-                print(energy[ligatom_idx, protatom_idx])
-                print(dm[ligatom_idx, protatom_idx])
-                break
-        """
+
 ########################
         return {
             'loss_pos': loss_pos,
