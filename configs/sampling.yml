@@ -1,9 +1,5 @@
 model:
-  #checkpoint: ./pretrained_models/pretrained_diffusion.pt
-  #checkpoint: /home/csy/work/3D/targetdiff_PINN/logs_diffusion/training_2023_07_28__21_19_53/checkpoints/384300.pt
-  #checkpoint: /home/csy/work/3D/targetdiff_PINN/logs_diffusion/training_2023_07_30__19_38_53/checkpoints/36000.pt
-  #checkpoint: /home/csy/work/3D/targetdiff_PINN/logs_diffusion/training_2023_09_29__18_09_24/checkpoints/21300.pt
-  checkpoint: /home/csy/work/3D/targetdiff_PINN/logs_diffusion/training_2023_09_30__19_56_28/checkpoints/30600.pt
+  checkpoint: /home/csy/work/3D/PIDiff/logs_diffusion/
 sample:
   seed: 2021
   num_samples: 10
