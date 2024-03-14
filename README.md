@@ -16,8 +16,8 @@ The code has been tested in the following environment:
 
 ### Install via Conda
 ```bash
-conda create -n PharDiff python=3.8
-conda activate PharDiff
+conda create -n PIDiff python=3.8
+conda activate PIDiff
 conda install pytorch pytorch-cuda=11.6 -c pytorch -c nvidia
 conda install pyg -c pyg
 conda install rdkit openbabel tensorboard pyyaml easydict python-lmdb -c conda-forge
